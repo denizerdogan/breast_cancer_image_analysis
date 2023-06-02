@@ -7,7 +7,7 @@ import pandas as pd
 
 # get the path to the directory containing the csv files
 csv_path = "QC/csv"
-outdir = "QC/csv_modified"
+outdir = "QC"
 
 
 
@@ -53,12 +53,36 @@ def get_filename(filename, outdir):
     return filename
 
 
-get_filename("deneme.csv", outdir)
+# get_filename("deneme.csv", outdir)
 
 
-#  do this for all csv files in the directory
-for filename in os.listdir(csv_path):
-    if filename.endswith(".csv"):
-        get_filename(filename, outdir)
-    else:
-        continue
+# #  do this for all csv files in the directory
+# for filename in os.listdir(csv_path):
+#     if filename.endswith(".csv"):
+#         get_filename(filename, outdir)
+#     else:
+#         continue
+
+
+
+# read in a csv file as a pandas dataframe
+df = pd.read_csv("QC/combined_df.csv")
+
+# change the values in column "super_classification" according to the following rules:
+# 1. if the value is "tumor_any", change it to "1"
+# 2. if the value is "sTIL", change it to "2"
+# 3. if the value is "nonTIL_stromal", change it to "3"
+# 4. if the value is "AMBIGUOUS" or "other_nucleus", change it to "4"
+
+df["super_classification"] = df["super_classification"].replace("tumor_any", "1")
+df["super_classification"] = df["super_classification"].replace("sTIL", "2")
+df["super_classification"] = df["super_classification"].replace("nonTIL_stromal", "3")
+df["super_classification"] = df["super_classification"].replace("AMBIGUOUS", "4")
+df["super_classification"] = df["super_classification"].replace("other_nucleus", "4")
+
+# write the dataframe to a new csv file
+df.to_csv(os.path.join(outdir, "combined_df_correct_labels.csv"), index=False)
+
+
+
+

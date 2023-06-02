@@ -1,0 +1,5 @@
+tumor_any         21296
+sTIL              19192
+nonTIL_stromal    10486
+AMBIGUOUS          7911
+other_nucleus       600
